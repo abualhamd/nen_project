@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../flavor_config.dart' show FlavorConfig;
+import '../../flavor_config.dart' show FlavorConfig;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
