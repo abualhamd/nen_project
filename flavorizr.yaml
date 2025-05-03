@@ -1,0 +1,26 @@
+ide: "vscode"
+app:
+  android:
+    flavorDimensions: "flavor-type"
+
+flavors:
+  dev:
+    app:
+      name: "Dev App"
+
+    android:
+      applicationId: "com.dev.app"  
+    ios:
+      bundleId: "com.dev.app"
+    macos:
+      bundleId: "com.dev.app"  
+  prod:
+    app:
+      name: "Prod App"
+  
+    android:
+      applicationId: "com.prod.app"
+    ios:
+      bundleId: "com.prod.app"
+    macos:
+      bundleId: "com.prod.app"
