@@ -46,13 +46,16 @@ class RegisterScreen extends HookWidget {
       },
       child: Scaffold(
         appBar: AppBar(title: const Text('Register')),
-        body: Center(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Form(
                 key: formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 8,
                   children: [
                     TextFormField(
                       controller: nameController,
@@ -101,7 +104,7 @@ class RegisterScreen extends HookWidget {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: () {
                         if (!(formKey.currentState?.validate() ?? false)) {
