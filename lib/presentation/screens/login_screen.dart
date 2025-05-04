@@ -7,7 +7,13 @@ import 'package:nen_project/core/core.dart';
 
 import '../../app/app.dart' show RouteNames;
 import '../blocs.dart'
-    show AuthBloc, AuthState, LoginEvent, LoginLoadingState, LoginSuccessState;
+    show
+        AuthBloc,
+        AuthState,
+        LoginEvent,
+        LoginFailureState,
+        LoginLoadingState,
+        LoginSuccessState;
 
 class LoginScreen extends HookWidget {
   const LoginScreen({super.key});
@@ -23,6 +29,15 @@ class LoginScreen extends HookWidget {
         switch (state) {
           case LoginSuccessState():
             context.goNamed(RouteNames.home);
+
+            break;
+          case LoginFailureState():
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.msg),
+                duration: Duration(seconds: 2),
+              ),
+            );
 
             break;
           default:

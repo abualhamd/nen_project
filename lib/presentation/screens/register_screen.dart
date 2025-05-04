@@ -10,6 +10,7 @@ import '../blocs.dart'
         AuthBloc,
         AuthState,
         RegisterEvent,
+        RegisterFailureState,
         RegisterLoadingState,
         RegisterSuccessState;
 
@@ -30,6 +31,14 @@ class RegisterScreen extends HookWidget {
         switch (state) {
           case RegisterSuccessState():
             context.goNamed(RouteNames.login);
+            break;
+          case RegisterFailureState():
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.msg),
+                duration: Duration(seconds: 2),
+              ),
+            );
             break;
           default:
             break;
