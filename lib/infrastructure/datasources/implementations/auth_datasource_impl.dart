@@ -10,8 +10,8 @@ class AuthDatasourceImpl implements AuthDatasource {
     final result = ResponseModel.fromJson({
       "isSuccess": true,
       "value": {
-        "access_token": "random_token",
-        "refresh_token": "random_refresh_token",
+        "accessToken": "random_token",
+        "refreshToken": "random_refresh_token",
       },
     });
     return Right(result);
