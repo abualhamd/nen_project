@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, ReadContext;
+import 'package:flutter_bloc/flutter_bloc.dart'
+    show BlocListener, BlocSelector, ReadContext;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nen_project/core/core.dart';
@@ -74,7 +75,16 @@ class LoginScreen extends HookWidget {
                       ),
                     );
                   },
-                  child: const Text('Login'),
+                  child: BlocSelector<AuthBloc, AuthState, bool>(
+                    selector: (state) {
+                      return state is LoginLoadingState;
+                    },
+                    builder: (context, isLoading) {
+                      return isLoading
+                          ? CircularProgressIndicator.adaptive()
+                          : const Text('Login');
+                    },
+                  ),
                 ),
               ],
             ),
