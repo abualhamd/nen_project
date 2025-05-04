@@ -101,6 +101,13 @@ class LoginScreen extends HookWidget {
                     },
                   ),
                 ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    context.goNamed(RouteNames.register);
+                  },
+                  child: const Text('Don\'t have an account?'),
+                ),
               ],
             ),
           ),
