@@ -22,6 +22,14 @@ class AuthRepoImpl implements AuthRepo {
     final result = await _datasource.login(input);
     return result.fold((failure) => Left(failure), (response) {
       try {
+        if (!(response.isSuccess ?? false)) {
+          return Left(
+            ServerFailure(
+              response.errors?.reduce((value, element) => "$value, $element") ??
+                  "Login failed",
+            ),
+          );
+        }
         final model = LoginResponse.fromJson(response.value);
         return Right(model);
       } catch (e) {
