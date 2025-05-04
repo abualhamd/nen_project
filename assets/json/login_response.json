@@ -1,0 +1,7 @@
+{
+    "isSuccess": true,
+    "value": {
+        "accessToken": "random_token",
+        "refreshToken": "random_refresh_token"
+    }
+}
