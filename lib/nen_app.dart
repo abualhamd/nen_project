@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
 
 import 'app/app.dart' show appRouter;
+import 'core/core.dart' show getThemeData;
 import 'flavor_config.dart' show FlavorConfig;
 import 'injection_container.dart' show getIt;
 import 'presentation/presentation.dart' show AuthBloc;
@@ -17,7 +18,7 @@ class NenApp extends StatelessWidget {
         routerConfig: appRouter,
         title: FlavorConfig.appTitle,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.blue),
+        theme: getThemeData(context),
         builder: (context, child) {
           return Banner(
             location: BannerLocation.topStart,
