@@ -1,21 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocListener, ReadContext;
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nen_project/core/core.dart';
 
 import '../../app/app.dart' show RouteNames;
+import '../blocs.dart'
+    show AuthBloc, AuthState, LoginEvent, LoginLoadingState, LoginSuccessState;
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends HookWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final formKey = useMemoized(() => GlobalKey<FormState>());
+
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        switch (state) {
+          case LoginSuccessState():
             context.goNamed(RouteNames.home);
-          },
-          child: const Text('Login'),
+
+            break;
+          default:
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Login')),
+        body: Center(
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (!(formKey.currentState?.validate() ?? false)) {
+                      return;
+                    }
+                    if (context.read<AuthBloc>().state is LoginLoadingState) {
+                      return;
+                    }
+
+                    context.read<AuthBloc>().add(
+                      LoginEvent(
+                        input: InputLogin(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Login'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

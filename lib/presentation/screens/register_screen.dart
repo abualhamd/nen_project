@@ -38,90 +38,102 @@ class RegisterScreen extends HookWidget {
       child: Scaffold(
         appBar: AppBar(title: const Text('Register')),
         body: Center(
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your name';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: confirmPasswordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm Password',
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    }
-                    if (value != passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (!(formKey.currentState?.validate() ?? false)) {
-                      return;
-                    }
-                    if (context.read<AuthBloc>().state
-                        is RegisterLoadingState) {
-                      return;
-                    }
-                    context.read<AuthBloc>().add(
-                      RegisterEvent(
-                        input: InputRegister(
-                          name: nameController.text,
-                          email: emailController.text,
-                          password: passwordController.text,
-                        ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: nameController,
+                      decoration: const InputDecoration(labelText: 'Name'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: const InputDecoration(labelText: 'Email'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: const InputDecoration(labelText: 'Password'),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: confirmPasswordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Confirm Password',
                       ),
-                    );
-                  },
-                  child: BlocSelector<AuthBloc, AuthState, bool>(
-                    selector: (state) {
-                      return state is RegisterLoadingState;
-                    },
-                    builder: (context, isLoading) {
-                      return isLoading
-                          ? CircularProgressIndicator.adaptive()
-                          : const Text('Register');
-                    },
-                  ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please confirm your password';
+                        }
+                        if (value != passwordController.text) {
+                          return 'Passwords do not match';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (!(formKey.currentState?.validate() ?? false)) {
+                          return;
+                        }
+                        if (context.read<AuthBloc>().state
+                            is RegisterLoadingState) {
+                          return;
+                        }
+                        context.read<AuthBloc>().add(
+                          RegisterEvent(
+                            input: InputRegister(
+                              name: nameController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          ),
+                        );
+                      },
+                      child: BlocSelector<AuthBloc, AuthState, bool>(
+                        selector: (state) {
+                          return state is RegisterLoadingState;
+                        },
+                        builder: (context, isLoading) {
+                          return isLoading
+                              ? CircularProgressIndicator.adaptive()
+                              : const Text('Register');
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  context.goNamed(RouteNames.login);
+                },
+                child: const Text('Already have an account?'),
+              ),
+            ],
           ),
         ),
       ),
